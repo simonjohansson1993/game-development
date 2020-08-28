@@ -1,2 +1,5 @@
-# game-development
-Game development involves small 2D games like platform games etc
+# Game-development
+## Space invasion 2D game
+This project will let you download and play a Space invasion game on your android phone. 
+
+
