@@ -9,34 +9,32 @@ public class Player extends Entity {
 
     private Bitmap _bitmap = null;
     int health = 3; //TODO REMOVE MAGIC VALUE
+    final static int targetHeight = 100;//TODO REMOVE THIS MAGIC VALUE
 
     public Player() {
         _bitmap = BitmapFactory.decodeResource(
                 _game.getContext().getResources(),R.drawable.player);
 
-        int targetHeight = 100;
-        float ratio = targetHeight/ (float) _bitmap.getHeight();
-        int newHeight = (int) (_bitmap.getHeight() * ratio);
-        int newWidth = (int)  (_bitmap.getWidth()* ratio);
-        Bitmap temp = Bitmap.createScaledBitmap(_bitmap,newWidth,newHeight,true);
+        Bitmap temp = Utils.scaleToTargetHeight(_bitmap,targetHeight);
 
         _bitmap.recycle();
         _bitmap = temp;
         _width = _bitmap.getWidth();
         _height = _bitmap.getHeight();
+        _velY = 6;
+        _velX = -3;
 
     }
 
+
+
     @Override
     void update() {
-        _x += _velX;
-        _y += _velY;
-        if (left() > Game.STAGE_WIDTH) {
-            setRight(0);
-        }
-        if (top() > Game.STAGE_HEIGHT){
-            setBottom(0);
-        }
+        super.update();
+
+       _x = Utils.wrap(_x, -_width, Game.STAGE_WIDTH);
+       _y = Utils.wrap(_y, _height,Game.STAGE_HEIGHT);
+
     }
 
     @Override
