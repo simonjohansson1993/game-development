@@ -14,12 +14,14 @@ public abstract class Entity {
     float _velY = 0;
 
     void update() {
-        _x += _velX;
-        _y += _velY;
+
     }
     void render(final Canvas canvas, final Paint paint) {}
     void onCollision(final Entity that) {}
 
+    void respawn (){
+
+    }
     float left() {
         return _x;
     }

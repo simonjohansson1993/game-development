@@ -1,59 +1,58 @@
 package com.example.a2dgame;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
-public class Player extends Entity {
+public class Player extends BitmapEntity {
 
+    static final String TAG = "Player";
     private Bitmap _bitmap = null;
-    int health = 3; //TODO REMOVE MAGIC VALUE
-    final static int targetHeight = 100;//TODO REMOVE THIS MAGIC VALUE
+    int _health = 3; //TODO REMOVE MAGIC VALUE
+    private final static int PLAYER_HEIGHT = 60;//TODO REMOVE THIS MAGIC VALUE
+    private final static int STARTING_POS = 40;
+    private final static int STARTING_HEALTH = 3;
+    private final static float ACCELERATION = 1.1f;
+    private final static float MIN_VEL = 1f;
+    private final static float MAX_VEL = 15f;
+    private final static float GRAVITY = 1.1f;
+    private final static float LIFT = - (GRAVITY*2);
+    private final static float DRAG = 0.97f;
+
+
 
     public Player() {
-        _bitmap = BitmapFactory.decodeResource(
-                _game.getContext().getResources(),R.drawable.player);
-
-        Bitmap temp = Utils.scaleToTargetHeight(_bitmap,targetHeight);
-
-        _bitmap.recycle();
-        _bitmap = temp;
-        _width = _bitmap.getWidth();
-        _height = _bitmap.getHeight();
-        _velY = 6;
-        _velX = -3;
-
+        super();
+        loadBitmap(R.drawable.player,PLAYER_HEIGHT);
+        respawn();
     }
-
-
+    @Override
+    void respawn(){
+        _x = STARTING_POS;
+        _health = STARTING_HEALTH;
+        _velX = 0f;
+        _velY = 0f;
+    }
 
     @Override
     void update() {
-        super.update();
 
-       _x = Utils.wrap(_x, -_width, Game.STAGE_WIDTH);
-       _y = Utils.wrap(_y, _height,Game.STAGE_HEIGHT);
+        _velX *= DRAG;
+        _velY += GRAVITY;
+        if (_game._isBoosting){
+            _velX *= ACCELERATION;
+            _velY += LIFT;
+        }
+        _velX = Utils.clamp(_velX,MIN_VEL,MAX_VEL);
+        _velY = Utils.clamp(_velY,-MAX_VEL,MAX_VEL);
+       _y += _velY;
 
+       _y = Utils.clamp(_y, 0,Game.STAGE_HEIGHT-_height);
+       _game._playerSpeed = _velX;
     }
 
-    @Override
-    void render(Canvas canvas, Paint paint) {
-        canvas.drawBitmap(_bitmap,_x,_y,paint);
-
-    }
 
     @Override
     void onCollision(Entity that) {
-        super.onCollision(that);
+        //TODO make player invisible for a short amount of time ->implement recovery frames
+        _health--;
     }
 
-    @Override
-    void destroy() {
-        if (_bitmap != null){
-            _bitmap.recycle();
-            _bitmap = null;
-        }
-
-    }
 }
