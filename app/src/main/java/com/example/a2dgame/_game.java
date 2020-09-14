@@ -1,25 +1,39 @@
 package com.example.a2dgame;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Game extends SurfaceView implements Runnable {
-
     //-------------------MEMBERS------------------------------
+    Resources res = getResources();
+
     public static final String TAG = "GAME";
-    static final int STAGE_WIDTH = 1280; //TODO: Move game settings to resources
-    static final int STAGE_HEIGHT = 720;
-    static final int STAR_COUNT = 40;
-    static final int ENEMY_COUNT = 10;
+    public static final String PREFS = "com.example.a2dgame";
+    public static final String LONGEST_DISTANCE = "longest_distance";
+
+
+
+    //-----------------GAME SETTINGS---------------------------
+
+    final int STAGE_WIDTH = res.getInteger(R.integer.STAGE_WIDTH);
+    final int STAGE_HEIGHT = res.getInteger(R.integer.STAGE_HEIGHT);
+    final int STAR_COUNT = res.getInteger(R.integer.STAR_COUNT);
+    final int ENEMY_COUNT = res.getInteger(R.integer.ENEMY_COUNT);
+
 
     private Thread _gameThread = null;
     private volatile boolean _isRunning = false;
@@ -30,17 +44,31 @@ public class Game extends SurfaceView implements Runnable {
     private Player _player = null;
     private boolean _gameover = true;
     Random _rng = new Random();
+    private SharedPreferences _prefs = null;
+    private SharedPreferences.Editor _editor = null;
+
+
     volatile boolean _isBoosting = false;
     float _distanceTraveled = 0f;
     float _playerSpeed = 0f;
+    private JukeBox _jukebox = null;
+    int _maxDistanceTraveled = 0;
+
 
     //-------------------CONSTRUCTOR---------------------------
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
     public Game(Context context) {
         super(context);
         Entity._game = this;
         _holder = getHolder();
         _holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT);
         _paint = new Paint();
+        _jukebox = new JukeBox(context);
+
+        _prefs = context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
+        _editor = _prefs.edit();
+
         for (int i = 0; i < STAR_COUNT; i++) {
             _enteties.add(new Star());
         }
@@ -48,6 +76,7 @@ public class Game extends SurfaceView implements Runnable {
             _enteties.add(new Enemy());
         }
         _player = new Player();
+        restart();
 
     }
 
@@ -57,9 +86,10 @@ public class Game extends SurfaceView implements Runnable {
         }
         _player.respawn();
         _distanceTraveled = 0f;
+        _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE,0);
         _gameover = false;
-
-
+        _jukebox.play(JukeBox.StartGame);
+        //TODO sound effect for starting game
     }
 
     //-------------------BEHAVIOUR----------------------------
@@ -70,7 +100,6 @@ public class Game extends SurfaceView implements Runnable {
             render();
         }
     }
-
     protected void onResume() {
         Log.d(TAG, "OnResume");
         _isRunning = true;
@@ -97,6 +126,7 @@ public class Game extends SurfaceView implements Runnable {
         for (Entity e : _enteties) {
             e.destroy();
         }
+        _jukebox.destroy();
         Entity._game = null;
     }
 
@@ -118,9 +148,16 @@ public class Game extends SurfaceView implements Runnable {
     private void checkGameOver() {
         if (_player._health < 1) {
             _gameover = true;
+            if (_distanceTraveled > _maxDistanceTraveled){
+                 _maxDistanceTraveled = (int) _distanceTraveled;
+                _editor.putInt(LONGEST_DISTANCE,_maxDistanceTraveled);
+                _editor.apply();
+            }
 
+            _jukebox.play(JukeBox.GAMEOVER);
         }
         //TODO: COUNT HIGHSCORE
+
     }
 
     private void checkCollisions() {
@@ -130,7 +167,7 @@ public class Game extends SurfaceView implements Runnable {
             if (_player.isColliding(temp)) {
                 _player.onCollision(temp);
                 temp.onCollision(_player);
-                //TODO PLAY SOUND EFFECT ON COLLISSION
+                _jukebox.play(JukeBox.CRASH);
             }
         }
     }
