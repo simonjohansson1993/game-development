@@ -2,13 +2,13 @@ package com.example.a2dgame;
 
 public class Enemy extends BitmapEntity {
     private final static int ENEMY_HEIGHT = 60;
-    private final static int ENEMY_SPAWN_OFFSET = Game.STAGE_WIDTH;
+    private final static int ENEMY_SPAWN_OFFSET = _game.STAGE_WIDTH;
 
 
     public Enemy() {
         super();
-        _x = Game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
-        _y = _game._rng.nextInt(Game.STAGE_HEIGHT- ENEMY_HEIGHT);
+        _x = _game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
+        _y = _game._rng.nextInt(_game.STAGE_HEIGHT- ENEMY_HEIGHT);
 
         int resId = R.drawable.tm1;
         switch (_game._rng.nextInt(3)){
@@ -32,8 +32,8 @@ public class Enemy extends BitmapEntity {
 
     @Override
     void respawn(){
-        _x = Game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
-        _y = _game._rng.nextInt(Game.STAGE_HEIGHT- ENEMY_HEIGHT);
+        _x = _game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
+        _y = _game._rng.nextInt(_game.STAGE_HEIGHT- ENEMY_HEIGHT);
 
     }
     @Override
@@ -41,12 +41,12 @@ public class Enemy extends BitmapEntity {
         _velX = - _game._playerSpeed;
         _x += _velX;
         if (right ()< 0 ){
-            _x = Game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
+            _x = _game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
         }
     }
 
     @Override
     void onCollision(Entity that) {
-        _x = Game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
+        _x = _game.STAGE_WIDTH + _game._rng.nextInt(ENEMY_SPAWN_OFFSET);
     }
 }

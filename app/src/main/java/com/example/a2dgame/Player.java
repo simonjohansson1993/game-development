@@ -1,12 +1,14 @@
 package com.example.a2dgame;
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
-
+import androidx.appcompat.app.AppCompatActivity;
 public class Player extends BitmapEntity {
 
-    static final String TAG = "Player";
+
     private Bitmap _bitmap = null;
     int _health = 3; //TODO REMOVE MAGIC VALUE
-    private final static int PLAYER_HEIGHT = 60;//TODO REMOVE THIS MAGIC VALUE
+    private final static int PLAYER_HEIGHT = 60;
     private final static int STARTING_POS = 40;
     private final static int STARTING_HEALTH = 3;
     private final static float ACCELERATION = 1.1f;
@@ -16,7 +18,9 @@ public class Player extends BitmapEntity {
     private final static float LIFT = - (GRAVITY*2);
     private final static float DRAG = 0.97f;
 
+   // Resources res = getActivity().getResources();
 
+    //final int PLAYER_HEIGHT = res.getInteger(R.integer.PLAYER_HEIGHT);
 
     public Player() {
         super();
@@ -44,7 +48,7 @@ public class Player extends BitmapEntity {
         _velY = Utils.clamp(_velY,-MAX_VEL,MAX_VEL);
        _y += _velY;
 
-       _y = Utils.clamp(_y, 0,Game.STAGE_HEIGHT-_height);
+       _y = Utils.clamp(_y, 0,_game.STAGE_HEIGHT-_height);
        _game._playerSpeed = _velX;
     }
 

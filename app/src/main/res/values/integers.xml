@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="playerHealth">3</integer>
+    <!--Used in _game class -->
     <integer name="STAGE_WIDTH">1280</integer>
     <integer name="STAGE_HEIGHT">720</integer>
     <integer name="STAR_COUNT">40</integer>
     <integer name="ENEMY_COUNT">10</integer>
 
-    
+    <!--Used in player class -->
+    <integer name="PLAYER_HEIGHT">60</integer>
+    <integer name="STARTING_POS">40</integer>
+    <integer name="STARTING_HEALTH">3</integer>
+
+
+
 </resources>

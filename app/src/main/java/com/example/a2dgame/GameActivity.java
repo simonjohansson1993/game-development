@@ -1,17 +1,20 @@
 package com.example.a2dgame;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 
 public class GameActivity extends AppCompatActivity {
 
-    Game _game;
+    _game _game;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _game = new Game(this);
+        _game = new _game(this);
         setContentView(_game);
 
     }

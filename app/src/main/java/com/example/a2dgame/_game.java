@@ -17,15 +17,13 @@ import androidx.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game extends SurfaceView implements Runnable {
+public class _game extends SurfaceView implements Runnable {
     //-------------------MEMBERS------------------------------
     Resources res = getResources();
 
     public static final String TAG = "GAME";
     public static final String PREFS = "com.example.a2dgame";
     public static final String LONGEST_DISTANCE = "longest_distance";
-
-
 
     //-----------------GAME SETTINGS---------------------------
 
@@ -58,7 +56,7 @@ public class Game extends SurfaceView implements Runnable {
     //-------------------CONSTRUCTOR---------------------------
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
-    public Game(Context context) {
+    public _game(Context context) {
         super(context);
         Entity._game = this;
         _holder = getHolder();
@@ -88,7 +86,7 @@ public class Game extends SurfaceView implements Runnable {
         _distanceTraveled = 0f;
         _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE,0);
         _gameover = false;
-        _jukebox.play(JukeBox.StartGame);
+        _jukebox.play(JukeBox.StartGame,-1);
         //TODO sound effect for starting game
     }
 
@@ -154,7 +152,7 @@ public class Game extends SurfaceView implements Runnable {
                 _editor.apply();
             }
 
-            _jukebox.play(JukeBox.GAMEOVER);
+            _jukebox.play(JukeBox.GAMEOVER,0);
         }
         //TODO: COUNT HIGHSCORE
 
@@ -167,7 +165,7 @@ public class Game extends SurfaceView implements Runnable {
             if (_player.isColliding(temp)) {
                 _player.onCollision(temp);
                 temp.onCollision(_player);
-                _jukebox.play(JukeBox.CRASH);
+                _jukebox.play(JukeBox.CRASH,0);
             }
         }
     }

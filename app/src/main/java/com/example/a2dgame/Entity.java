@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 public abstract class Entity {
     static final String TAG = "Entity";
-    static Game _game = null; //shared ref, managed by the Game-class!
+    static _game _game = null; //shared ref, managed by the Game-class!
     float _x = 0;
     float _y = 0;
     float _width = 0;
