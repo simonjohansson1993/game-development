@@ -1,8 +1,5 @@
 package com.example.a2dgame;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import androidx.appcompat.app.AppCompatActivity;
 public class Player extends BitmapEntity {
 
 
@@ -17,10 +14,6 @@ public class Player extends BitmapEntity {
     private final static float GRAVITY = 1.1f;
     private final static float LIFT = - (GRAVITY*2);
     private final static float DRAG = 0.97f;
-
-   // Resources res = getActivity().getResources();
-
-    //final int PLAYER_HEIGHT = res.getInteger(R.integer.PLAYER_HEIGHT);
 
     public Player() {
         super();

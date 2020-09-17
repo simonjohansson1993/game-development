@@ -17,7 +17,7 @@ import androidx.annotation.RequiresApi;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class _game extends SurfaceView implements Runnable {
+public class Game extends SurfaceView implements Runnable {
     //-------------------MEMBERS------------------------------
     Resources res = getResources();
 
@@ -27,10 +27,10 @@ public class _game extends SurfaceView implements Runnable {
 
     //-----------------GAME SETTINGS---------------------------
 
-    final int STAGE_WIDTH = res.getInteger(R.integer.STAGE_WIDTH);
-    final int STAGE_HEIGHT = res.getInteger(R.integer.STAGE_HEIGHT);
-    final int STAR_COUNT = res.getInteger(R.integer.STAR_COUNT);
-    final int ENEMY_COUNT = res.getInteger(R.integer.ENEMY_COUNT);
+    final static int STAGE_WIDTH = 1280;
+    final static int STAGE_HEIGHT = 720;
+    final static int STAR_COUNT = 40;
+    final static int ENEMY_COUNT = 20;
 
 
     private Thread _gameThread = null;
@@ -56,7 +56,7 @@ public class _game extends SurfaceView implements Runnable {
     //-------------------CONSTRUCTOR---------------------------
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 
-    public _game(Context context) {
+    public Game(Context context) {
         super(context);
         Entity._game = this;
         _holder = getHolder();
