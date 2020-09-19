@@ -4,14 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
 import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -29,6 +30,7 @@ public class Game extends SurfaceView implements Runnable {
     private Paint _paint = new Paint();
     private ArrayList<Entity> _enteties = new ArrayList<>();
     private Player _player = null;
+    private UI ui = null;
     private boolean _gameover = true;
     Random _rng = new Random();
     private SharedPreferences _prefs = null;
@@ -66,8 +68,8 @@ public class Game extends SurfaceView implements Runnable {
             _enteties.add(new Asteroid());
         }
         _player = new Player();
+        ui = new UI();
         restart();
-
     }
 
     private void restart() {
@@ -167,46 +169,15 @@ public class Game extends SurfaceView implements Runnable {
         if (!acquireAndLockCanvas()) {
             return;
         }
-
-            //Draw entities,player and HUD
-        _canvas.drawColor(Color.BLACK); //Clearing screen
-        for (Entity e : _enteties) {
-            e.render(_canvas, _paint);
-        }
-        _player.render(_canvas, _paint);
-
-            renderHUD(_canvas, _paint);
-
-
-        _holder.unlockCanvasAndPost(_canvas);
-
-    }
-
-    private void renderHUD(final Canvas canvas, final Paint paint) {
-        final float textSize = 48f;
-        paint.setColor(Color.WHITE);
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTextSize(textSize);
-        if (!_gameover){
-            canvas.drawText("Health: " + _player._health,10,textSize,paint);
-            canvas.drawText("Score: " + (int) Config._distanceTraveled / 2,900,textSize,paint);
-        }
-        else if (_player._health == 0){
-            final float _centerY = Config.STAGE_HEIGHT/2;
-            canvas.drawText("GAME OVER! ",Config.STAGE_WIDTH/2,_centerY,paint);
-            canvas.drawText("(press to restart) ",Config.STAGE_WIDTH/2,_centerY + textSize,paint);
-
-        }
+        ui.drawEnteties(_gameover,_player,_enteties,_canvas,_holder);
     }
 
     private boolean acquireAndLockCanvas() {
         if (!_holder.getSurface().isValid()) {
             return false;
-
         }
         _canvas = _holder.lockCanvas();
         return (_canvas != null);
-
     }
 
     @Override
