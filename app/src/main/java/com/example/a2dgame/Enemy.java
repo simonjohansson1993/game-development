@@ -29,6 +29,42 @@ public class Enemy extends BitmapEntity {
         _bitmap = Utils.flipBitmap(_bitmap,false);
         respawn();
     }
+    int createShip(){
+        int resId = R.drawable.tm1;
+        switch (Game._rng.nextInt(3)){
+            case 0:
+                resId = R.drawable.tm1;
+                break;
+            case 1:
+                resId = R.drawable.tm2;
+                break;
+            case 2:
+                resId = R.drawable.tm3;
+                break;
+            case 3:
+                resId = R.drawable.tm4;
+                break;
+        }
+        return resId;
+    }
+    int createMeteor(){
+        int resId = R.drawable.asteroid1;
+        switch (Game._rng.nextInt(3)){
+            case 0:
+                resId = R.drawable.asteroid1;
+                break;
+            case 1:
+                resId = R.drawable.asteroid2;
+                break;
+            case 2:
+                resId = R.drawable.asteroid3;
+                break;
+            case 3:
+                resId = R.drawable.asteroid4;
+                break;
+        }
+        return resId;
+    }
 
     @Override
     void respawn(){

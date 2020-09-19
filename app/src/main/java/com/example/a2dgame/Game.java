@@ -60,7 +60,10 @@ public class Game extends SurfaceView implements Runnable {
             _enteties.add(new Star());
         }
         for (int i = 0; i < Config.ENEMY_COUNT; i++) {
-            _enteties.add(new Enemy());
+            _enteties.add(new Ship());
+        }
+        for (int i = 0; i < Config.ENEMY_COUNT; i++) {
+            _enteties.add(new Asteroid());
         }
         _player = new Player();
         restart();
