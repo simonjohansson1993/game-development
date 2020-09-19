@@ -19,10 +19,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final Button startButton = findViewById(R.id.start_btn);
         startButton.setOnClickListener(this);
 
-        final TextView highScore = (TextView) findViewById(R.id.highScore);
+        TextView highScore = (TextView) findViewById(R.id.highScore);
         SharedPreferences prefs = getSharedPreferences(Game.PREFS, Context.MODE_PRIVATE);
         int longestDistance = prefs.getInt(Game.LONGEST_DISTANCE,0);
-        highScore.setText("Highscore: " + longestDistance + " km");
+
+        String highScoreLabel = String.format(getString(R.string.highscore_label), longestDistance);
+        highScore.setText(highScoreLabel);
     }
 
     @Override

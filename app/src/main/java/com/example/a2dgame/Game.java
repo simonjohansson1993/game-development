@@ -11,27 +11,16 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Game extends SurfaceView implements Runnable {
     //-------------------MEMBERS------------------------------
-    Resources res = getResources();
-
+    Resources resource = getResources();
     public static final String TAG = "GAME";
     public static final String PREFS = "com.example.a2dgame";
     public static final String LONGEST_DISTANCE = "longest_distance";
-
-    //-----------------GAME SETTINGS---------------------------
-
-    final static int STAGE_WIDTH = 1280;
-    final static int STAGE_HEIGHT = 720;
-    final static int STAR_COUNT = 40;
-    final static int ENEMY_COUNT = 20;
-
 
     private Thread _gameThread = null;
     private volatile boolean _isRunning = false;
@@ -47,8 +36,8 @@ public class Game extends SurfaceView implements Runnable {
 
 
     volatile boolean _isBoosting = false;
-    float _distanceTraveled = 0f;
-    float _playerSpeed = 0f;
+
+
     private JukeBox _jukebox = null;
     int _maxDistanceTraveled = 0;
 
@@ -58,19 +47,19 @@ public class Game extends SurfaceView implements Runnable {
 
     public Game(Context context) {
         super(context);
-        Entity._game = this;
+        Entity.Game = this;
         _holder = getHolder();
-        _holder.setFixedSize(STAGE_WIDTH, STAGE_HEIGHT);
+        _holder.setFixedSize(Config.STAGE_WIDTH, Config.STAGE_HEIGHT);
         _paint = new Paint();
         _jukebox = new JukeBox(context);
 
         _prefs = context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
         _editor = _prefs.edit();
 
-        for (int i = 0; i < STAR_COUNT; i++) {
+        for (int i = 0; i < Config.STAR_COUNT; i++) {
             _enteties.add(new Star());
         }
-        for (int i = 0; i < ENEMY_COUNT; i++) {
+        for (int i = 0; i < Config.ENEMY_COUNT; i++) {
             _enteties.add(new Enemy());
         }
         _player = new Player();
@@ -83,7 +72,7 @@ public class Game extends SurfaceView implements Runnable {
             e.respawn();
         }
         _player.respawn();
-        _distanceTraveled = 0f;
+        Config._distanceTraveled = 0f;
         _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE,0);
         _gameover = false;
         _jukebox.play(JukeBox.StartGame,-1);
@@ -125,7 +114,7 @@ public class Game extends SurfaceView implements Runnable {
             e.destroy();
         }
         _jukebox.destroy();
-        Entity._game = null;
+        Entity.Game = null;
     }
 
 
@@ -137,7 +126,7 @@ public class Game extends SurfaceView implements Runnable {
         for (Entity e : _enteties) {
             e.update();
         }
-        _distanceTraveled += _playerSpeed;
+        Config._distanceTraveled += Config._playerSpeed;
         checkCollisions();
         //CHECK FOR WIN/LOOSE
         checkGameOver();
@@ -146,8 +135,8 @@ public class Game extends SurfaceView implements Runnable {
     private void checkGameOver() {
         if (_player._health < 1) {
             _gameover = true;
-            if (_distanceTraveled > _maxDistanceTraveled){
-                 _maxDistanceTraveled = (int) _distanceTraveled;
+            if (Config._distanceTraveled > _maxDistanceTraveled){
+                 _maxDistanceTraveled = (int) Config._distanceTraveled;
                 _editor.putInt(LONGEST_DISTANCE,_maxDistanceTraveled);
                 _editor.apply();
             }
@@ -160,7 +149,7 @@ public class Game extends SurfaceView implements Runnable {
 
     private void checkCollisions() {
         Entity temp = null;
-        for (int i = STAR_COUNT; i < _enteties.size(); i++) { // 0- STAR_COUNT = Background entities.
+        for (int i = Config.STAR_COUNT; i < _enteties.size(); i++) { // 0- STAR_COUNT = Background entities.
             temp = _enteties.get(i);
             if (_player.isColliding(temp)) {
                 _player.onCollision(temp);
@@ -197,12 +186,12 @@ public class Game extends SurfaceView implements Runnable {
         paint.setTextSize(textSize);
         if (!_gameover){
             canvas.drawText("Health: " + _player._health,10,textSize,paint);
-            canvas.drawText("Score: " + (int) _distanceTraveled / 2,900,textSize,paint);
+            canvas.drawText("Score: " + (int) Config._distanceTraveled / 2,900,textSize,paint);
         }
         else if (_player._health == 0){
-            final float _centerY = STAGE_HEIGHT/2;
-            canvas.drawText("GAME OVER! ",STAGE_WIDTH/2,_centerY,paint);
-            canvas.drawText("(press to restart) ",STAGE_WIDTH/2,_centerY + textSize,paint);
+            final float _centerY = Config.STAGE_HEIGHT/2;
+            canvas.drawText("GAME OVER! ",Config.STAGE_WIDTH/2,_centerY,paint);
+            canvas.drawText("(press to restart) ",Config.STAGE_WIDTH/2,_centerY + textSize,paint);
 
         }
     }

@@ -4,16 +4,17 @@ public class Player extends BitmapEntity {
 
 
     private Bitmap _bitmap = null;
-    int _health = 3; //TODO REMOVE MAGIC VALUE
-    private final static int PLAYER_HEIGHT = 60;
-    private final static int STARTING_POS = 40;
-    private final static int STARTING_HEALTH = 3;
-    private final static float ACCELERATION = 1.1f;
-    private final static float MIN_VEL = 1f;
-    private final static float MAX_VEL = 15f;
-    private final static float GRAVITY = 1.1f;
+    int _health = Config._health;
+    private final static int PLAYER_HEIGHT = Config.PLAYER_HEIGHT;
+    private final static int STARTING_POS = Config.STARTING_POS;
+    private final static int STARTING_HEALTH = Config.STARTING_HEALTH;
+
+    private final static float ACCELERATION = Config.ACCELERATION;
+    private final static float MIN_VEL = Config.MIN_VEL;
+    private final static float MAX_VEL = Config.MAX_VEL;
+    private final static float GRAVITY = Config.GRAVITY;
     private final static float LIFT = - (GRAVITY*2);
-    private final static float DRAG = 0.97f;
+    private final static float DRAG = Config.DRAG;
 
     public Player() {
         super();
@@ -33,7 +34,7 @@ public class Player extends BitmapEntity {
 
         _velX *= DRAG;
         _velY += GRAVITY;
-        if (_game._isBoosting){
+        if (Game._isBoosting){
             _velX *= ACCELERATION;
             _velY += LIFT;
         }
@@ -41,8 +42,8 @@ public class Player extends BitmapEntity {
         _velY = Utils.clamp(_velY,-MAX_VEL,MAX_VEL);
        _y += _velY;
 
-       _y = Utils.clamp(_y, 0,_game.STAGE_HEIGHT-_height);
-       _game._playerSpeed = _velX;
+       _y = Utils.clamp(_y, 0, Config.STAGE_HEIGHT-_height);
+       Config._playerSpeed = _velX;
     }
 
 

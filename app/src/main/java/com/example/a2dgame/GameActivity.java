@@ -16,7 +16,6 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         _game = new Game(this);
         setContentView(_game);
-
     }
 
     @Override

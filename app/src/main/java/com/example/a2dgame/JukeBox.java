@@ -40,8 +40,7 @@ public class JukeBox {
             GAMEOVER = _soundPool.load(descriptor,1);
             descriptor = assetManager.openFd("BackgroundSound.mp3");
             StartGame = _soundPool.load(descriptor,1);
-            //descriptor = assetManager.openFd("BackgroundSound.mp3");
-            //BackgroundSound = _soundPool.load(descriptor, 1);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

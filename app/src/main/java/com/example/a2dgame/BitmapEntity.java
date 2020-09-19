@@ -14,7 +14,7 @@ public class BitmapEntity extends Entity {
     protected void loadBitmap(int resId, int height){
         destroy();
         Bitmap temp  = BitmapFactory.decodeResource(
-                _game.getContext().getResources(),resId);
+                Game.getContext().getResources(),resId);
 
         _bitmap = Utils.scaleToTargetHeight(temp, height);
         temp.recycle();
@@ -24,7 +24,6 @@ public class BitmapEntity extends Entity {
 
     void render(Canvas canvas, Paint paint) {
         canvas.drawBitmap(_bitmap,_x,_y,paint);
-
     }
 
 
@@ -33,6 +32,5 @@ public class BitmapEntity extends Entity {
             _bitmap.recycle();
             _bitmap = null;
         }
-
     }
 }
