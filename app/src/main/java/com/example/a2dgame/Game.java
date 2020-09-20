@@ -38,13 +38,11 @@ public class Game extends SurfaceView implements Runnable {
     private SharedPreferences.Editor _editor = null;
 
 
-
     volatile boolean _isBoosting = false;
     private JukeBox _jukebox = null;
     int _maxDistanceTraveled = 0;
     long frameTick = 0;
     boolean hasCollide = false;
-    boolean recoveryIsActive = false;
 
 
     //-------------------CONSTRUCTOR---------------------------
@@ -59,7 +57,7 @@ public class Game extends SurfaceView implements Runnable {
         _jukebox = new JukeBox(context);
 
 
-        _prefs = context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
+        _prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         _editor = _prefs.edit();
 
 
@@ -84,10 +82,10 @@ public class Game extends SurfaceView implements Runnable {
         }
         _player.respawn();
         Config._distanceTraveled = 0f;
-        _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE,0);
+        _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE, 0);
         _gameover = false;
-        if (!_prefs.getBoolean("isMuted",false)){
-        _jukebox.play(JukeBox.StartGame,-1);
+        if (!_prefs.getBoolean("isMuted", false)) {
+            _jukebox.play(JukeBox.StartGame, -1);
         }
         //TODO sound effect for starting game
         frameTick = 0;
@@ -103,6 +101,7 @@ public class Game extends SurfaceView implements Runnable {
             render();
         }
     }
+
     protected void onResume() {
         Log.d(TAG, "OnResume");
         _isRunning = true;
@@ -145,13 +144,12 @@ public class Game extends SurfaceView implements Runnable {
         }
         Config._distanceTraveled += Config._playerSpeed;
 
-        if (frameTick > Config.playerRecoveryTime){
+        if (frameTick > Config.playerRecoveryTime) {
             checkCollisions();
         }
-        if (frameTick > 120){
+        if (frameTick > 120) {
             hasCollide = false;
         }
-
 
         //CHECK FOR WIN/LOOSE
         checkGameOver();
@@ -160,13 +158,13 @@ public class Game extends SurfaceView implements Runnable {
     private void checkGameOver() {
         if (_player._health < 1) {
             _gameover = true;
-            if (Config._distanceTraveled > _maxDistanceTraveled){
-                 _maxDistanceTraveled = (int) Config._distanceTraveled;
-                _editor.putInt(LONGEST_DISTANCE,_maxDistanceTraveled);
+            if (Config._distanceTraveled > _maxDistanceTraveled) {
+                _maxDistanceTraveled = (int) Config._distanceTraveled;
+                _editor.putInt(LONGEST_DISTANCE, _maxDistanceTraveled);
                 _editor.apply();
             }
-            if (!_prefs.getBoolean("isMuted",false)){
-            _jukebox.play(JukeBox.GAMEOVER,0);
+            if (!_prefs.getBoolean("isMuted", false)) {
+                _jukebox.play(JukeBox.GAMEOVER, 0);
             }
         }
         //TODO: COUNT HIGHSCORE
@@ -178,14 +176,14 @@ public class Game extends SurfaceView implements Runnable {
         Entity temp = null;
         for (int i = Config.STAR_COUNT; i < _enteties.size(); i++) { // 0- STAR_COUNT = Background entities.
             temp = _enteties.get(i);
-            if (_player.isColliding(temp) ) {
+            if (_player.isColliding(temp)) {
                 _player.onCollision(temp);
                 hasCollide = true;
                 frameTick = 0;
 
                 temp.onCollision(_player);
-                if (!_prefs.getBoolean("isMuted",false)){
-                    _jukebox.play(JukeBox.CRASH,0);
+                if (!_prefs.getBoolean("isMuted", false)) {
+                    _jukebox.play(JukeBox.CRASH, 0);
                 }
             }
         }
@@ -201,23 +199,18 @@ public class Game extends SurfaceView implements Runnable {
             e.render(_canvas, _paint);
         }
 
-        if (hasCollide && ((frameTick % 2 == 0) && frameTick < 120)){
+        if (hasCollide && ((frameTick % 2 == 0) && frameTick < 120)) {
             _player.render(_canvas, _paint);
-        }
-        else if(hasCollide && ((frameTick % 2 == 1) && frameTick < 120)){
+        } else if (hasCollide && ((frameTick % 2 == 1) && frameTick < 120)) {
             //not render to create blink effect
-        }
-
-        else if (!hasCollide ){
+        } else if (!hasCollide) {
             _player.render(_canvas, _paint);
         }
 
 
-
-        ui.renderHUD(_canvas, _paint,_gameover,_player);
+        ui.renderHUD(_canvas, _paint, _gameover, _player);
         _holder.unlockCanvasAndPost(_canvas);
     }
-
 
 
     private boolean acquireAndLockCanvas() {
@@ -243,6 +236,5 @@ public class Game extends SurfaceView implements Runnable {
         }
         return true;
     }
-
 
 }

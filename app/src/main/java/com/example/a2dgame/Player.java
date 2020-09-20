@@ -1,4 +1,5 @@
 package com.example.a2dgame;
+
 import android.graphics.Bitmap;
 
 public class Player extends BitmapEntity {
@@ -14,17 +15,18 @@ public class Player extends BitmapEntity {
     private final static float MIN_VEL = Config.MIN_VEL;
     private final static float MAX_VEL = Config.MAX_VEL;
     private final static float GRAVITY = Config.GRAVITY;
-    private final static float LIFT = - (GRAVITY*2);
+    private final static float LIFT = -(GRAVITY * 2);
     private final static float DRAG = Config.DRAG;
-    int nrOfTick = 0;
+
 
     public Player() {
         super();
-        loadBitmap(R.drawable.player,PLAYER_HEIGHT);
+        loadBitmap(R.drawable.player, PLAYER_HEIGHT);
         respawn();
     }
+
     @Override
-    void respawn(){
+    void respawn() {
         _x = STARTING_POS;
         _health = STARTING_HEALTH;
         _velX = 0f;
@@ -36,16 +38,16 @@ public class Player extends BitmapEntity {
 
         _velX *= DRAG;
         _velY += GRAVITY;
-        if (Game._isBoosting){
+        if (Game._isBoosting) {
             _velX *= ACCELERATION;
             _velY += LIFT;
         }
-        _velX = Utils.clamp(_velX,MIN_VEL,MAX_VEL);
-        _velY = Utils.clamp(_velY,-MAX_VEL,MAX_VEL);
-       _y += _velY;
+        _velX = Utils.clamp(_velX, MIN_VEL, MAX_VEL);
+        _velY = Utils.clamp(_velY, -MAX_VEL, MAX_VEL);
+        _y += _velY;
 
-       _y = Utils.clamp(_y, 0, Config.STAGE_HEIGHT-_height);
-       Config._playerSpeed = _velX;
+        _y = Utils.clamp(_y, 0, Config.STAGE_HEIGHT - _height);
+        Config._playerSpeed = _velX;
 
     }
 
@@ -53,7 +55,7 @@ public class Player extends BitmapEntity {
     @Override
     void onCollision(Entity that) {
 
-            _health--;
+        _health--;
     }
 
 }

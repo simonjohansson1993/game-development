@@ -8,13 +8,14 @@ public class Enemy extends BitmapEntity {
     public Enemy() {
         super();
         _x = Config.STAGE_WIDTH + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
-        _y = Game._rng.nextInt(Config.STAGE_HEIGHT- ENEMY_HEIGHT);
+        _y = Game._rng.nextInt(Config.STAGE_HEIGHT - ENEMY_HEIGHT);
 
 
     }
-    int createShip(){
+
+    int createShip() {
         int resId = R.drawable.tm1;
-        switch (Game._rng.nextInt(3)){
+        switch (Game._rng.nextInt(3)) {
             case 0:
                 resId = R.drawable.tm1;
                 break;
@@ -30,9 +31,10 @@ public class Enemy extends BitmapEntity {
         }
         return resId;
     }
-    int createAsteroid(){
+
+    int createAsteroid() {
         int resId = R.drawable.asteroid1;
-        switch (Game._rng.nextInt(3)){
+        switch (Game._rng.nextInt(3)) {
             case 0:
                 resId = R.drawable.asteroid1;
                 break;
@@ -50,16 +52,17 @@ public class Enemy extends BitmapEntity {
     }
 
     @Override
-    void respawn(){
+    void respawn() {
         _x = Config.STAGE_WIDTH + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
-        _y = Game._rng.nextInt(Config.STAGE_HEIGHT- ENEMY_HEIGHT);
+        _y = Game._rng.nextInt(Config.STAGE_HEIGHT - ENEMY_HEIGHT);
 
     }
+
     @Override
     void update() {
-        _velX = - Config._playerSpeed;
+        _velX = -Config._playerSpeed;
         _x += _velX;
-        if (right ()< 0 ){
+        if (right() < 0) {
             _x = Config.STAGE_WIDTH + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
         }
     }

@@ -22,33 +22,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startButton.setOnClickListener(this);
 
         TextView highScore = (TextView) findViewById(R.id.highScore);
-         final SharedPreferences prefs = getSharedPreferences(Game.PREFS, Context.MODE_PRIVATE);
-        int longestDistance = prefs.getInt(Game.LONGEST_DISTANCE,0);
+        final SharedPreferences prefs = getSharedPreferences(Game.PREFS, Context.MODE_PRIVATE);
+        int longestDistance = prefs.getInt(Game.LONGEST_DISTANCE, 0);
 
-        final ImageView muteButton = (ImageView)  findViewById(R.id.muteBtn);
-        isMuted = prefs.getBoolean("isMuted",false);
+        final ImageView muteButton = (ImageView) findViewById(R.id.muteBtn);
+        isMuted = prefs.getBoolean("isMuted", false);
 
-        if (isMuted){
-        muteButton.setImageResource(R.drawable.ic_baseline_volume_off_24);
-        }
-        else {
+        if (isMuted) {
+            muteButton.setImageResource(R.drawable.ic_baseline_volume_off_24);
+        } else {
             muteButton.setImageResource(R.drawable.ic_baseline_volume_up_24);
         }
-            muteButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    isMuted = !isMuted;
-                    if (isMuted){
-                        muteButton.setImageResource(R.drawable.ic_baseline_volume_off_24);
-                    }
-                    else {
-                        muteButton.setImageResource(R.drawable.ic_baseline_volume_up_24);
-                    }
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putBoolean("isMuted", isMuted);
-                    editor.apply();
+        muteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isMuted = !isMuted;
+                if (isMuted) {
+                    muteButton.setImageResource(R.drawable.ic_baseline_volume_off_24);
+                } else {
+                    muteButton.setImageResource(R.drawable.ic_baseline_volume_up_24);
                 }
-            });
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean("isMuted", isMuted);
+                editor.apply();
+            }
+        });
 
         String highScoreLabel = String.format(getString(R.string.highscore_label), longestDistance);
         highScore.setText(highScoreLabel);
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        final Intent i = new Intent(this,GameActivity.class);
+        final Intent i = new Intent(this, GameActivity.class);
         startActivity(i);
         finish();
 

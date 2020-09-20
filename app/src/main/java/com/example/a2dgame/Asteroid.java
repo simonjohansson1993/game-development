@@ -15,17 +15,18 @@ public class Asteroid extends Enemy {
 
         respawn();
     }
+
     @Override
     void update() {
-        _velX = - 10;
+        _velX = -10;
         _x += _velX;
         _velY = -3;
         _y += _velY;
-        if (right ()< 0 ){
+        if (right() < 0) {
             _x = Config.STAGE_WIDTH + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
         }
-        if (bottom ()< 0 ){
-            _y = Config.STAGE_HEIGHT+ Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
+        if (bottom() < 0) {
+            _y = Config.STAGE_HEIGHT + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
         }
     }
 }

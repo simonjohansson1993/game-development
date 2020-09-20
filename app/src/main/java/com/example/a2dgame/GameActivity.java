@@ -19,21 +19,21 @@ public class GameActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
 
         super.onPause();
         _game.onPause();
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
 
         super.onResume();
         _game.onResume();
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy() {
 
         super.onDestroy();
         _game.onDestroy();
