@@ -10,24 +10,7 @@ public class Enemy extends BitmapEntity {
         _x = Config.STAGE_WIDTH + Game._rng.nextInt(ENEMY_SPAWN_OFFSET);
         _y = Game._rng.nextInt(Config.STAGE_HEIGHT- ENEMY_HEIGHT);
 
-        int resId = R.drawable.tm1;
-        switch (Game._rng.nextInt(3)){
-            case 0:
-                resId = R.drawable.tm1;
-                break;
-            case 1:
-                resId = R.drawable.tm2;
-                break;
-            case 2:
-                resId = R.drawable.tm3;
-                break;
-            case 3:
-                resId = R.drawable.tm4;
-                break;
-        }
-        loadBitmap(resId, ENEMY_HEIGHT);
-        _bitmap = Utils.flipBitmap(_bitmap,false);
-        respawn();
+
     }
     int createShip(){
         int resId = R.drawable.tm1;
@@ -47,7 +30,7 @@ public class Enemy extends BitmapEntity {
         }
         return resId;
     }
-    int createMeteor(){
+    int createAsteroid(){
         int resId = R.drawable.asteroid1;
         switch (Game._rng.nextInt(3)){
             case 0:

@@ -38,11 +38,9 @@ public class Game extends SurfaceView implements Runnable {
 
 
     volatile boolean _isBoosting = false;
-
-
     private JukeBox _jukebox = null;
     int _maxDistanceTraveled = 0;
-
+    int frameCount = 0;
 
     //-------------------CONSTRUCTOR---------------------------
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -55,20 +53,23 @@ public class Game extends SurfaceView implements Runnable {
         _paint = new Paint();
         _jukebox = new JukeBox(context);
 
+
         _prefs = context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
         _editor = _prefs.edit();
+
 
         for (int i = 0; i < Config.STAR_COUNT; i++) {
             _enteties.add(new Star());
         }
-        for (int i = 0; i < Config.ENEMY_COUNT; i++) {
+        for (int i = 0; i < Config.SHIP_COUNT; i++) {
             _enteties.add(new Ship());
         }
-        for (int i = 0; i < Config.ENEMY_COUNT; i++) {
+        for (int i = 0; i < Config.METEOR_COUNT; i++) {
             _enteties.add(new Asteroid());
         }
         _player = new Player();
         ui = new UI();
+
         restart();
     }
 
@@ -80,7 +81,9 @@ public class Game extends SurfaceView implements Runnable {
         Config._distanceTraveled = 0f;
         _maxDistanceTraveled = _prefs.getInt(LONGEST_DISTANCE,0);
         _gameover = false;
+        if (!_prefs.getBoolean("isMuted",false)){
         _jukebox.play(JukeBox.StartGame,-1);
+        }
         //TODO sound effect for starting game
     }
 
@@ -130,6 +133,8 @@ public class Game extends SurfaceView implements Runnable {
         _player.update();
         for (Entity e : _enteties) {
             e.update();
+
+
         }
         Config._distanceTraveled += Config._playerSpeed;
         checkCollisions();
@@ -145,8 +150,9 @@ public class Game extends SurfaceView implements Runnable {
                 _editor.putInt(LONGEST_DISTANCE,_maxDistanceTraveled);
                 _editor.apply();
             }
-
+            if (!_prefs.getBoolean("isMuted",false)){
             _jukebox.play(JukeBox.GAMEOVER,0);
+            }
         }
         //TODO: COUNT HIGHSCORE
 
@@ -159,7 +165,11 @@ public class Game extends SurfaceView implements Runnable {
             if (_player.isColliding(temp)) {
                 _player.onCollision(temp);
                 temp.onCollision(_player);
-                _jukebox.play(JukeBox.CRASH,0);
+                if (!_prefs.getBoolean("isMuted",false)){
+                    _jukebox.play(JukeBox.CRASH,0);
+                }
+
+                frameCount++;
             }
         }
     }

@@ -44,4 +44,18 @@
         android:textColor="@android:color/background_light"
         android:textStyle="bold" />
 
+    <ImageView
+        android:id="@+id/muteBtn"
+        android:layout_width="201dp"
+        android:layout_height="161dp"
+        android:layout_above="@+id/start_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="73dp"
+        app:srcCompat="@drawable/ic_baseline_volume_up_24"
+        tools:ignore="VectorDrawableCompat" />
+
+
 </RelativeLayout>

@@ -16,8 +16,8 @@ public class JukeBox {
     private static final int MAX_STREAMS = 3;
     static int CRASH = 0;
     static int GAMEOVER = 0;
-    static int StartGame = -0;
-
+    static int StartGame = 0;
+    static int LIFT = 0;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     JukeBox(final Context context) {
         AudioAttributes attr = new AudioAttributes.Builder()
@@ -35,11 +35,13 @@ public class JukeBox {
             AssetManager assetManager = context.getAssets();
             AssetFileDescriptor descriptor;
             descriptor = assetManager.openFd("crash.wav");
-            CRASH = _soundPool.load(descriptor, 1);
+            CRASH = _soundPool.load(descriptor, 0);
             descriptor = assetManager.openFd("DeathSound.wav");
-            GAMEOVER = _soundPool.load(descriptor,1);
+            GAMEOVER = _soundPool.load(descriptor,0);
             descriptor = assetManager.openFd("BackgroundSound.mp3");
             StartGame = _soundPool.load(descriptor,1);
+            //descriptor = assetManager.openFd("lift.wav");
+            //LIFT = _soundPool.load(descriptor,1);
 
         } catch (IOException e) {
             e.printStackTrace();
