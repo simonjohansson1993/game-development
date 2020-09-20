@@ -17,6 +17,7 @@ public class Config {
     final static int ENEMY_HEIGHT = 50;
     final static int ASTEROID_HEIGHT = 40;
     static float _distanceTraveled = 0f;
+    final static int playerRecoveryTime = 120;
 
     static int _health = 3;
     final static int PLAYER_HEIGHT = 60;

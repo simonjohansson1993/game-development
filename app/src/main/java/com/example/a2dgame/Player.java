@@ -1,5 +1,6 @@
 package com.example.a2dgame;
 import android.graphics.Bitmap;
+
 public class Player extends BitmapEntity {
 
 
@@ -15,6 +16,7 @@ public class Player extends BitmapEntity {
     private final static float GRAVITY = Config.GRAVITY;
     private final static float LIFT = - (GRAVITY*2);
     private final static float DRAG = Config.DRAG;
+    int nrOfTick = 0;
 
     public Player() {
         super();
@@ -44,13 +46,14 @@ public class Player extends BitmapEntity {
 
        _y = Utils.clamp(_y, 0, Config.STAGE_HEIGHT-_height);
        Config._playerSpeed = _velX;
+
     }
 
 
     @Override
     void onCollision(Entity that) {
-        //TODO make player invisible for a short amount of time ->implement recovery frames
-        _health--;
+
+            _health--;
     }
 
 }

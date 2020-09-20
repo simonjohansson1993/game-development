@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.Log;
@@ -37,10 +38,14 @@ public class Game extends SurfaceView implements Runnable {
     private SharedPreferences.Editor _editor = null;
 
 
+
     volatile boolean _isBoosting = false;
     private JukeBox _jukebox = null;
     int _maxDistanceTraveled = 0;
-    int frameCount = 0;
+    long frameTick = 0;
+    boolean hasCollide = false;
+    boolean recoveryIsActive = false;
+
 
     //-------------------CONSTRUCTOR---------------------------
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -85,6 +90,9 @@ public class Game extends SurfaceView implements Runnable {
         _jukebox.play(JukeBox.StartGame,-1);
         }
         //TODO sound effect for starting game
+        frameTick = 0;
+        hasCollide = false;
+
     }
 
     //-------------------BEHAVIOUR----------------------------
@@ -113,7 +121,6 @@ public class Game extends SurfaceView implements Runnable {
         }
     }
 
-
     protected void onDestroy() {
         Log.d(TAG, "OnDestroy");
         _gameThread = null;
@@ -127,17 +134,25 @@ public class Game extends SurfaceView implements Runnable {
 
 
     private void update() {
+        frameTick++;
+
         if (_gameover) {
             return;
         }
         _player.update();
         for (Entity e : _enteties) {
             e.update();
-
-
         }
         Config._distanceTraveled += Config._playerSpeed;
-        checkCollisions();
+
+        if (frameTick > Config.playerRecoveryTime){
+            checkCollisions();
+        }
+        if (frameTick > 120){
+            hasCollide = false;
+        }
+
+
         //CHECK FOR WIN/LOOSE
         checkGameOver();
     }
@@ -159,17 +174,19 @@ public class Game extends SurfaceView implements Runnable {
     }
 
     private void checkCollisions() {
+
         Entity temp = null;
         for (int i = Config.STAR_COUNT; i < _enteties.size(); i++) { // 0- STAR_COUNT = Background entities.
             temp = _enteties.get(i);
-            if (_player.isColliding(temp)) {
+            if (_player.isColliding(temp) ) {
                 _player.onCollision(temp);
+                hasCollide = true;
+                frameTick = 0;
+
                 temp.onCollision(_player);
                 if (!_prefs.getBoolean("isMuted",false)){
                     _jukebox.play(JukeBox.CRASH,0);
                 }
-
-                frameCount++;
             }
         }
     }
@@ -179,8 +196,29 @@ public class Game extends SurfaceView implements Runnable {
         if (!acquireAndLockCanvas()) {
             return;
         }
-        ui.drawEnteties(_gameover,_player,_enteties,_canvas,_holder);
+        _canvas.drawColor(Color.BLACK); //Clearing screen
+        for (Entity e : _enteties) {
+            e.render(_canvas, _paint);
+        }
+
+        if (hasCollide && ((frameTick % 2 == 0) && frameTick < 120)){
+            _player.render(_canvas, _paint);
+        }
+        else if(hasCollide && ((frameTick % 2 == 1) && frameTick < 120)){
+            //not render to create blink effect
+        }
+
+        else if (!hasCollide ){
+            _player.render(_canvas, _paint);
+        }
+
+
+
+        ui.renderHUD(_canvas, _paint,_gameover,_player);
+        _holder.unlockCanvasAndPost(_canvas);
     }
+
+
 
     private boolean acquireAndLockCanvas() {
         if (!_holder.getSurface().isValid()) {

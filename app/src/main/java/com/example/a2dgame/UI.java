@@ -3,9 +3,6 @@ package com.example.a2dgame;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.SurfaceHolder;
-
-import java.util.ArrayList;
 
 public class UI  {
 
@@ -14,20 +11,7 @@ public class UI  {
     public UI() {
     }
 
-    void drawEnteties(boolean _gameover,Player _player,ArrayList<Entity> _enteties,Canvas _canvas,SurfaceHolder _holder ){
-
-        _canvas.drawColor(Color.BLACK); //Clearing screen
-        for (Entity e : _enteties) {
-            e.render(_canvas, _paint);
-        }
-        _player.render(_canvas, _paint);
-
-        renderHUD(_canvas, _paint,_gameover,_player);
-        _holder.unlockCanvasAndPost(_canvas);
-    }
-
-
-    private void renderHUD(final Canvas canvas, final Paint paint, boolean _gameOver,Player _player) {
+    void renderHUD(final Canvas canvas, final Paint paint, boolean _gameOver,Player _player) {
         final float textSize = 48f;
         paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.LEFT);
