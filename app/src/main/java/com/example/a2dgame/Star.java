@@ -15,7 +15,7 @@ public class Star extends BitmapEntity {
         _radius = Game._rng.nextInt(Config.UPPER_BOUND) + Config.LOWER_BOUND;
         _width = _radius * 2;
         _height = _radius * 2;
-        _velX = -4f;
+        _velX = Config.STAR_VELOCITY;
 
         switch (Game._rng.nextInt(3)) {
             case 0:
@@ -34,7 +34,7 @@ public class Star extends BitmapEntity {
 
     @Override
     void update() {
-        _velX = (-Config._playerSpeed / 3); //30% SLOWER SPEED
+        _velX = (-Config._playerSpeed / 3); //66% SLOWER SPEED for stars
         _x += _velX;
         _x = Utils.wrap(_x, 0, Config.STAGE_WIDTH + _width);
         _y = Utils.wrap(_y, 0, Config.STAGE_HEIGHT - _height);

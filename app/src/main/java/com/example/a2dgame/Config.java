@@ -6,6 +6,7 @@ public class Config {
     final static int STAGE_WIDTH = 1280;
     final static int STAGE_HEIGHT = 720;
     final static int STAR_COUNT = 40;
+    static float STAR_VELOCITY = -4;
     final static int SHIP_COUNT = 10;
     final static int METEOR_COUNT = 2;
     static float _playerSpeed = 0f;
